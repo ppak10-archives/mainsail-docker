@@ -1,0 +1,11 @@
+services:
+  mainsail:
+    container_name: mainsail-server
+    build:
+      context: ./mainsail
+      dockerfile: Dockerfile
+    ports:
+      - 7125:7125
+      - 8080:80
+    volumes:
+      - ./mainsail/config.json:/usr/share/nginx/html/config.json

@@ -27,15 +27,14 @@ RUN apt install -y \
 RUN git clone https://github.com/KevinOConnor/klipper
 RUN pip install -r ./klipper/scripts/klippy-requirements.txt
 
-
 # Don't run service inside docker container.
 # COPY ./klipper.service /etc/systemd/system/klipper.service
 # RUN systemctl enable klipper.service
 
-RUN mkdir klipper_config
 RUN mkdir klipper_logs
 RUN mkdir gcode_files
-RUN touch klipper_config/printer.cfg
+
+COPY config/ ./klipper_config/
 
 CMD ["python", "/home/klipper/klippy/klippy.py", \
   "/home/klipper_config/printer.cfg", \

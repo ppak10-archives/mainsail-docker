@@ -1,21 +1,42 @@
 services:
   mainsail:
-    container_name: mainsail-server
+    container_name: mainsail
     build:
       context: ./mainsail
       dockerfile: Dockerfile
+    networks:
+      moonraker-network:
     ports:
-      - 7125:7125
       - 8080:80
     volumes:
       - ./mainsail/config.json:/usr/share/nginx/html/config.json
+    depends_on:
+      - moonraker
+
+  moonraker:
+    container_name: moonraker
+    build:
+      context: .
+      dockerfile: moonraker/Dockerfile
+    networks:
+      moonraker-network:
+    expose:
+      - 7125
+    volumes:
+      - klipper_logs:/home/klipper_logs
+    depends_on:
+      - klipper
   
   klipper:
-    container_name: klipper-server
+    container_name: klipper
     build:
-      context: ./klipper
-      dockerfile: Dockerfile
-    # depends_on:
-    #   - moonraker
+      context: .
+      dockerfile: klipper/Dockerfile
+    volumes:
+      - klipper_logs:/home/klipper_logs
 
-    tty: true
+networks:
+  moonraker-network:
+
+volumes:
+  klipper_logs:

@@ -9,3 +9,13 @@ services:
       - 8080:80
     volumes:
       - ./mainsail/config.json:/usr/share/nginx/html/config.json
+  
+  klipper:
+    container_name: klipper-server
+    build:
+      context: ./klipper
+      dockerfile: Dockerfile
+    # depends_on:
+    #   - moonraker
+
+    tty: true
